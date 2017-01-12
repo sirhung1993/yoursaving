@@ -1,0 +1,76 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <b>Calculate your saving by fill the form below!</b>
+            <p>In put your salary here!</p>
+            <i style="color:red"> The information input here is not secured.<br />
+                There is no HTTPs connection here. Your infomation will be send as plaintext.<br />
+                It could be read by other who in the same Local Area Netword.<br />
+                With some sniffing TOOL.<br .></i>
+            <i> However, there is no identity information here. And your information <br />
+                will not be stored in our DATABASE.</i>
+            <form action="/yoursaving/calculation" id="saving" method="post">
+                <fieldset>
+                <label> Your age :
+                    <input type="number" name="age" placeholder="How old are you?"/>
+                    years old - optional
+                </label><br />
+                <label> Your income per month :
+                    <input type="number" name="monthSalary" placeholder="10000000"/>
+                    (VNĐ).
+                </label>
+                <label> Your income increment:
+                    <input type="number" name="salaryIncrement" placeholder="10000000"/>
+                    (%/year) - assume that the income is increased on January.
+                </label><br />
+                <label> Your fix cost per month :
+                    <input type="number" name="fixCost" placeholder="4000000"/>
+                    (VNĐ).
+                </label><br />
+                <label> Your fix cost increment per year :
+                    <input type="number" name="fixCostIncrement" placeholder="0"/>
+                    (%/year) - optional.
+                </label> <br />
+                <label> The approximate Bank interest :
+                    <input type="number" name="bankInterest" placeholder="0.5"/>
+                    (%/month) - assume that you save the money in the Bank.
+                </label><br />
+                <label> The approximate inflation rate :
+                    <input type="number" name="inflationRate" placeholder="7"/>
+                    (%/year) - 0% if there is no inflation or you do not care about inflation rate.
+                </label><br />
+                <label> How many years you want to do the calculation :
+                    <input type="number" name="calculationDuration" placeholder="0.5"/>
+                    (year(s)) - the maximum duration the you want estimate your saving.
+                </label><br />
+                <label> The format of saving :
+                    <select name="typeOfFormat" form="saving">
+                        <option value="year">By year</option>
+                        <option value="month">By month</option>
+                    </select>
+                    The output format of the total asset per month or year.
+                </label><br />
+                <input type="submit" value="Submit" />
+            </fieldset>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+</html>
