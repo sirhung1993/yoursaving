@@ -14,10 +14,10 @@
     <main>
         <div class="jumbotron">
             <b>Calculate your saving by fill the form below!</b>
-            <p>In put your salary here!</p>
+            <p>In put your income here. The saving is under compound interest calculation</p>
             <i style="color:red"> The information input here is not secured.<br />
                 There is no HTTPs connection here. Your infomation will be send as plaintext.<br />
-                It could be read by other who in the same Local Area Netword.<br />
+                It could be read by other who are in the same Local Area Netword.<br />
                 With some sniffing TOOL.<br .></i>
             <i> However, there is no identity information here. And your information <br />
                 will not be stored in our DATABASE.</i>
@@ -30,21 +30,30 @@
                 <label> Your income per month :
                     <input type="number" name="monthSalary" placeholder="10000000"/>
                     (VNĐ).
+                </label> <br />
+
+                <label> Your bonus salary (eg. : 13th month salary) :
+                    <input type="number" name="bonusSalary" placeholder="10000000"/>
+                    (VNĐ) - optional.
+                </label> <br />
+                <label> Your bonus money in a year :
+                    <input type="number" name="bonusReward" placeholder="10000000"/>
+                    (VNĐ) - assume that you have a personal business or others.
                 </label>
-                <label> Your income increment:
-                    <input type="number" name="salaryIncrement" placeholder="10000000"/>
-                    (%/year) - assume that the income is increased on January.
-                </label><br />
+                <label> When do you receive the bonus money :
+                    <input type="number" name="monthReceiveBonus" value="1"/>
+                    (month in number) - default is 1st month.
+                </label> <br />
                 <label> Your fix cost per month :
                     <input type="number" name="fixCost" placeholder="4000000"/>
                     (VNĐ).
                 </label><br />
                 <label> Your fix cost increment per year :
-                    <input type="number" name="fixCostIncrement" placeholder="0"/>
+                    <input type="text" name="fixCostIncrement" placeholder="0"/>
                     (%/year) - optional.
                 </label> <br />
                 <label> The approximate Bank interest :
-                    <input type="number" name="bankInterest" placeholder="0.5"/>
+                    <input type="text" name="bankInterest" placeholder="0.5"/>
                     (%/month) - assume that you save the money in the Bank.
                 </label><br />
                 <label> The approximate inflation rate :
