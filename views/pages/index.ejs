@@ -31,7 +31,10 @@
                     <input type="number" name="monthSalary" placeholder="10000000"/>
                     (VNĐ).
                 </label> <br />
-
+                <label> Your salary increment per year :
+                    <input type="text" name="salaryIncrement" placeholder="10"/>
+                    (%/year) - optional.
+                </label> <br />
                 <label> Your bonus salary (eg. : 13th month salary) :
                     <input type="number" name="bonusSalary" placeholder="10000000"/>
                     (VNĐ) - optional.
@@ -80,6 +83,14 @@
     <footer>
         <% include ../partials/footer %>
     </footer>
-
+    <ul>
+    <% if (ReadableEstimationSaving) { %>
+    <%    for ( let e in ReadableEstimationSaving) {  %>
+        <li><h4><%= ReadableEstimationSaving[e].name %> ------- <%= ReadableEstimationSaving[e].asset %></h4></li>
+    <%  }  %>
+    <% } else { %>
+        <h1>Result here</h1>
+    <%}%>
+</ul>
 </body>
 </html>

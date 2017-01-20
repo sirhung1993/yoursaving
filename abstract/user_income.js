@@ -17,15 +17,16 @@ module.exports = class user_income {
     constructor (userIncome) {
         this.age                = parseInt(userIncome.age);
         this.monthSalary        = parseInt(userIncome.monthSalary);
-        this.salaryIncrement    = parseInt(userIncome.salaryIncrement);
+        this.salaryIncrement    = parseFloat(userIncome.salaryIncrement);
         this.bonusReward        = parseInt(userIncome.bonusReward);
         this.monthReceiveBonus  = parseInt(userIncome.monthReceiveBonus);
         this.fixCost            = parseInt(userIncome.fixCost);
-        this.fixCostIncrement   = parseInt(userIncome.fixCostIncrement);
-        this.bankInterest       = parseInt(userIncome.bankInterest);
-        this.inflationRate      = parseInt(userIncome.inflationRate);
+        this.fixCostIncrement   = parseFloat(userIncome.fixCostIncrement);
+        this.bankInterest       = parseFloat(userIncome.bankInterest);
+        this.inflationRate      = parseFloat(userIncome.inflationRate);
         this.calculationDuration= parseInt(userIncome.calculationDuration);
         this.typeOfFormat       = userIncome.typeOfFormat;
+        this.totalSaving        = [];
     }
 /*      CheckInput check all the input from user.
 *       the input are POSITIVE NUMBER
@@ -49,47 +50,78 @@ module.exports = class user_income {
 */
     EstimationSaving () {
         if ( this.CheckInput() ) {
-            let salary = this.monthSalary;
+            let salary  =   this.monthSalary;
             let fixCost =   this.fixCost;
             let calculationDuration = Math.ceil(this.calculationDuration) ?
             Math.ceil(this.calculationDuration) : 1; // the smallest duration is 1 YEAR
-            let bankInterest        = this.bankInterest + 1;
-            let salaryIncrement     = this.salaryIncrement + 1;
-            let fixCostIncrement    = this.fixCostIncrement + 1;
-            let totalAsset          =  [salary];
+            let bankInterest        = this.bankInterest/100 + 1;
+            let salaryIncrement     = this.salaryIncrement/100 + 1;
+            let fixCostIncrement    = this.fixCostIncrement/100 + 1;
+            let totalAsset          =  [salary - fixCost];
             let currentMonth        =  1; //totalAsset in first month = first monthSalary
-            console.log(calculationDuration + " " + totalAsset);
+
+
             for (let month = 2; month <= 12; month++) {
                 if (month != this.monthReceiveBonus) {
                     currentMonth++;
-                    totalAsset[month - 1] = totalAsset[month - 2] *
-                    (this.bankInterest + 1) + salary - fixCost;
+                    totalAsset[currentMonth - 1] = totalAsset[currentMonth - 2] *
+                    bankInterest + salary - fixCost;
                 } else {
                     currentMonth++;
                     totalAsset[month - 1] = totalAsset[month - 2] *
-                    (this.bankInterest + 1) + salary + this.bonusReward - fixCost;
+                    bankInterest + salary + this.bonusReward - fixCost;
                 }
             }
+            //Bonus - 13th month salary.
+            totalAsset[currentMonth-1] +=  salary;
+            // from the 2nd year - if it exist
             for (let year = 1 ; year < calculationDuration; year++){
-                totalAsset[currentMonth+1] += salary;
                 salary   *= salaryIncrement;
                 fixCost  *= fixCostIncrement;
                 for (let month = 1 ; month <= 12 ; month++) {
                     if (month != this.monthReceiveBonus) {
                         currentMonth++;
                         totalAsset[currentMonth - 1] = totalAsset[currentMonth - 2] *
-                        (this.bankInterest + 1) + salary - fixCost;
+                        bankInterest + salary - fixCost;
                     } else {
                         currentMonth++;
-                        totalAsset[currentMonth - 1] = totalAsset[currentMonth - 2] *
-                        (this.bankInterest + 1) + salary + this.bonusReward - fixCost;
+                        totalAsset[currentMonth - 1] = (totalAsset[currentMonth - 2] *
+                        bankInterest + salary + this.bonusReward - fixCost);
                     }
                 }
             }
-            console.log("totalAsset : " + totalAsset);
-        } else return new Promise.reject (
+            return totalAsset;
+        } else return  Promise.reject (
             {err : { msg : 'Invalid input! Please input possitive number ' +
                             'or check again the Bonus salary.'}});
+    }
+
+    ConvertToLetter(arrayOfTotalAsset){
+        for (let order in arrayOfTotalAsset) {
+            arrayOfTotalAsset[order] = parseInt(arrayOfTotalAsset[order] / 1000000) +
+            " Triệu " + parseInt(arrayOfTotalAsset[order] % 1000000) + " Ngàn ";
+        }
+        return arrayOfTotalAsset;
+    }
+    ReadableEstimationSaving (){
+        let EstimationSaving   = this.EstimationSaving();
+        let readableEstimation  = [];
+        let month = 0;
+        // console.log(EstimationSaving);
+        if (typeof EstimationSaving == 'object') {
+            let totalAssetByMonth = this.ConvertToLetter(EstimationSaving);
+            for (let value in totalAssetByMonth) {
+                let name    = ++month + "th month";
+                let asset   = totalAssetByMonth[value]
+                readableEstimation[value] = {name , asset};
+            }
+            // console.log(readableEstimation[0].asset);
+            return readableEstimation;
+        } else {
+            totalAssetByMonth.catch ((err) => {
+                return Promise.reject(err);
+            })
+        }
     }
 
 }
