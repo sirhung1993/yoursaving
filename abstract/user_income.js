@@ -1,17 +1,20 @@
+'use strict';
 module.exports = class user_income {
     /*
     {
-          age: '111',
-          monthSalary: '111',
-          bonusReward: '111',
-          monthReceiveBonus: '111',
-          salaryIncrement: '111',
-          fixCost: '111',
-          fixCostIncrement: '111',
-          bankInterest: '11',
-          inflationRate: '11',
-          calculationDuration: '11',
-          typeOfFormat: 'year'
+        age: 20,
+        monthSalary: 9000000,
+        salaryIncrement: 10,
+        bonusReward: 9000000,
+        monthReceiveBonus: 4,
+        fixCost: 4000000,
+        fixCostIncrement: 10,
+        bankInterest: 0.53,
+        inflationRate: 10,
+        calculationDuration: 2,
+        typeOfCurrency: 'usd',
+        typeOfFormat: 'year',
+        totalSaving: []
     }
     */
     constructor (userIncome) {
@@ -25,6 +28,7 @@ module.exports = class user_income {
         this.bankInterest       = parseFloat(userIncome.bankInterest);
         this.inflationRate      = parseFloat(userIncome.inflationRate);
         this.calculationDuration= parseInt(userIncome.calculationDuration);
+        this.typeOfCurrency     = userIncome.typeOfCurrency;
         this.typeOfFormat       = userIncome.typeOfFormat;
         this.totalSaving        = [];
     }
@@ -97,31 +101,78 @@ module.exports = class user_income {
     }
 
     ConvertToLetter(arrayOfTotalAsset){
-        for (let order in arrayOfTotalAsset) {
-            arrayOfTotalAsset[order] = parseInt(arrayOfTotalAsset[order] / 1000000) +
-            " Triệu " + parseInt(arrayOfTotalAsset[order] % 1000000) + " Ngàn ";
+        let convertedToLetter = arrayOfTotalAsset;
+        if(this.typeOfCurrency == "vnd") {
+            for (let order in convertedToLetter) {
+                convertedToLetter[order] = parseInt(convertedToLetter[order] / 1000000) +
+                " triệu " + parseInt(convertedToLetter[order] % 1000000) + " ngàn Đồng";
+            }
+        } else if (this.typeOfCurrency == "usd"){
+            for (let order in convertedToLetter) {
+                if (!parseInt(convertedToLetter[order] / 1000000)) {
+                    convertedToLetter[order] = parseInt(convertedToLetter[order] / 1000) +
+                    " thousand(s) " + parseInt(convertedToLetter[order] % 1000) + "$Trump";
+                } else {
+                    convertedToLetter[order] = parseInt(convertedToLetter[order] / 1000000) +
+                    " million(s) " + parseInt(convertedToLetter[order] % 1000000) + " thousand(s) "+
+                    " $Trump ";
+                }
+            }
+        } else {
+            return  Promise.reject (
+                {err : { msg : 'Invalid input! Please input correct curreny type.' +
+                                'Or check again your input.'}});
         }
-        return arrayOfTotalAsset;
+        return convertedToLetter;
     }
+
+    FormatByPeriod (EstimationSaving){
+        let formattedByPeriod = [];
+        if (this.typeOfFormat == 'year') {
+            for (var totalAssetByMonth in EstimationSaving) {
+                if (((parseInt(totalAssetByMonth) + 1) % 12) == 0) {
+                    formattedByPeriod.push(EstimationSaving[totalAssetByMonth]);
+                }
+            }
+            return formattedByPeriod;
+        } else if (this.typeOfFormat == 'month') {
+            return EstimationSaving;
+        } else {
+            return  Promise.reject (
+                {err : { msg : 'Invalid input! Please input correct time format.' +
+                                'Or check again your input.'}});
+        }
+    }
+
     ReadableEstimationSaving (){
         let EstimationSaving   = this.EstimationSaving();
         let readableEstimation  = [];
-        let month = 0;
+        let usedPeriodFormat    = this.typeOfFormat;
+
         // console.log(EstimationSaving);
         if (typeof EstimationSaving == 'object') {
-            let totalAssetByMonth = this.ConvertToLetter(EstimationSaving);
-            for (let value in totalAssetByMonth) {
-                let name    = ++month + "th month";
-                let asset   = totalAssetByMonth[value]
-                readableEstimation[value] = {name , asset};
-            }
-            // console.log(readableEstimation[0].asset);
-            return readableEstimation;
+            let formattedByPeriod = this.FormatByPeriod(EstimationSaving);
+            let convertedToLetter = this.ConvertToLetter(formattedByPeriod);
+            if (usedPeriodFormat == 'year'|| usedPeriodFormat == 'month') {
+                for (var totalAssetByEachYear in convertedToLetter) {
+                    readableEstimation.push({
+                        name : (totalAssetByEachYear + 1) + 'th ' + usedPeriodFormat,
+                        asset: convertedToLetter[totalAssetByEachYear]
+                    });
+;
+                }
+            } else {
+                    return Promise.reject (
+                        {err : {msg : "Invalid type of Format"}}
+                    );
+                }
         } else {
-            totalAssetByMonth.catch ((err) => {
+            EstimationSaving.catch ((err) =>{
                 return Promise.reject(err);
             })
         }
+        console.log(readableEstimation);
+        return readableEstimation;
     }
 
 }

@@ -5,6 +5,21 @@
 
 <!-- CSS (load bootstrap from a CDN) -->
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="layout/w3.css">
 <style>
-    body    { padding-top:50px; }
+    html,body    { font-family: "Nimbus Sans L", cursive, sans-serif; }
 </style>
+<script>
+<!--
+function ChangeCurrencyType () {
+    var currencyDisplay     = document.getElementById('currencyType');
+    var usedCurrency        = currencyDisplay.options[currencyDisplay.selectedIndex].text;
+    var arrayOfVNDElement   = document.getElementsByTagName('b');
+    for (var e in arrayOfVNDElement) {
+        if (arrayOfVNDElement[e].id == 'vnd') {
+            arrayOfVNDElement[e].innerHTML = usedCurrency;
+        }
+    }
+//-->
+}
+</script>
