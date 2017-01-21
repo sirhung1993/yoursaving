@@ -144,6 +144,21 @@ module.exports = class user_income {
         }
     }
 
+    InflationReduction (){
+        let remainAssetAfterReduction = 1 - this.inflationRate/100;
+        let finalInflationRate = 1;
+        if (this.CheckInput()) {
+            for (var i = 1; i <= this.calculationDuration; i++) {
+                finalInflationRate *= remainAssetAfterReduction;
+            }
+            return finalInflationRate;
+        } else {
+            return Promise.reject(
+                {err : {msg : "Please input again! Input Invalid"}}
+            )
+        }
+    }
+
     ReadableEstimationSaving (){
         let EstimationSaving   = this.EstimationSaving();
         let readableEstimation  = [];
@@ -156,7 +171,7 @@ module.exports = class user_income {
             if (usedPeriodFormat == 'year'|| usedPeriodFormat == 'month') {
                 for (var totalAssetByEachYear in convertedToLetter) {
                     readableEstimation.push({
-                        name : (totalAssetByEachYear + 1) + 'th ' + usedPeriodFormat,
+                        name : (parseInt(totalAssetByEachYear) + 1) + 'th ' + usedPeriodFormat,
                         asset: convertedToLetter[totalAssetByEachYear]
                     });
 ;
@@ -171,7 +186,6 @@ module.exports = class user_income {
                 return Promise.reject(err);
             })
         }
-        console.log(readableEstimation);
         return readableEstimation;
     }
 

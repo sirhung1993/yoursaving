@@ -165,8 +165,8 @@
             </div>
             <div class="w3-container w3-half ">
                 <select  name="typeOfFormat" form="saving">
-                    <option value="month">By month  </option>
                     <option value="year" >By year   </option>
+                    <option value="month">By month  </option>
                 </select>
             </div>
             <div class="w3-container w3-quarter">
@@ -205,6 +205,12 @@
                 <%= ReadableEstimationSaving[e].asset %>
             </div>
     <%  }  %>
+            <div class="w3-container w3-half w3-bottombar">
+                <p class="w3-text-red">Asset reduction due to inflation (if existing) :</p>
+            </div>
+            <div class="w3-container w3-half w3-bottombar w3-text-blue">
+                <p class="w3-text-red"><%= finalInflationRate %> %</p>
+            </div>
     <% } else { %>
         <h1>Result here</h1>
     <%}%>

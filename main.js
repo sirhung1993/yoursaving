@@ -9,19 +9,23 @@ app.use (bodyParser.urlencoded({ extended : false }));
 app.set ('view engine' , 'ejs');
 app.use ('/layout' , express.static('./views/layout'))
 let ReadableEstimationSaving = [];
+let finalInflationRate;
 app.get ('/' , (req , res , next ) => {
     res.render('pages/index', {
-        ReadableEstimationSaving: ReadableEstimationSaving
-
+        ReadableEstimationSaving: ReadableEstimationSaving,
+        finalInflationRate      : finalInflationRate
     });
 });
 
 app.post ('/calculation' , form.single() , (req , res , next ) => {
     let estimateSavingProcess = new UserIncome (req.body);
     // console.log(parseInt(0.9));
+    let finalInflationRate = (1 - estimateSavingProcess.InflationReduction()).toFixed(2);
+    console.log(finalInflationRate);
     let ReadableEstimationSaving =  estimateSavingProcess.ReadableEstimationSaving();
     res.render ('pages/index', {
-        ReadableEstimationSaving : ReadableEstimationSaving
+        ReadableEstimationSaving : ReadableEstimationSaving,
+        finalInflationRate       : finalInflationRate
     });
 });
 
