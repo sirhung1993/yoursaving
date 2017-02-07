@@ -5,6 +5,7 @@ const form          = require('multer')();
 const bodyParser    = require ('body-parser');
 const UserIncome    = require ('./abstract/user_income.js')
 
+app.set('port', (process.env.PORT || 5000));
 app.use (bodyParser.urlencoded({ extended : false }));
 app.set ('view engine' , 'ejs');
 app.use ('/layout' , express.static('./views/layout'))
@@ -39,6 +40,6 @@ app.get('*', (req , res, next) => {
     res.render('pages/error_page');
 })
 
-app.listen('2345' , () => {
-    console.log ("Server is running at port 2345");
+app.listen(app.get('port') , () => {
+    console.log ('Node app is running on port', app.get('port'));
 });
