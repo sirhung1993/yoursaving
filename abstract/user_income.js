@@ -17,6 +17,7 @@ module.exports = class user_income {
         totalSaving: []
     }
     */
+
     constructor (userIncome) {
         this.age                = parseInt(userIncome.age);
         this.monthSalary        = parseInt(userIncome.monthSalary);
@@ -36,6 +37,23 @@ module.exports = class user_income {
 *       the input are POSITIVE NUMBER
 *       and typeOfFormat must be YEAR or MONTH.
 */
+
+    setDefault() {
+        this.age                = isNaN(this.age) ? undefined : this.age;
+        this.monthSalary        = isNaN(this.monthSalary) ? 10000000 : this.monthSalary;
+        this.salaryIncrement    = isNaN(this.salaryIncrement) ? 10   : this.salaryIncrement;
+        this.bonusReward        = isNaN(this.bonusReward) ? 10000000 : this.bonusReward;
+        this.monthReceiveBonus  = isNaN(this.bonusReward) ? 1 : this.monthReceiveBonus;
+        this.fixCost            = isNaN(this.fixCost ) ? 4000000 : this.fixCost ;
+        this.fixCostIncrement   = isNaN(this.fixCostIncrement) ? 0 : this.fixCostIncrement ;
+        this.bankInterest       = isNaN(this.bankInterest) ? 0.5 : this.bankInterest ;
+        this.inflationRate      = isNaN(this.inflationRate) ? 7 : this.inflationRate ;
+        this.calculationDuration= isNaN(this.calculationDuration) ? 1 : this.calculationDuration ;
+        // for (var i in this) {
+        //     console.log(this[i]);
+        //     }
+        }
+
     CheckInput() {
         let isPositiveNumber;
         for (let key in this) {

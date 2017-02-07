@@ -13,20 +13,26 @@ let ReadableEstimationSaving = [];
 let finalInflationRate;
 app.get ('/' , (req , res , next ) => {
     res.render('pages/index', {
-        ReadableEstimationSaving: ReadableEstimationSaving,
-        finalInflationRate      : finalInflationRate
+        ReadableEstimationSaving: null,
+        finalInflationRate      : null
     });
 });
+
+app.get ( '/test' , (req , res , next) => {
+    let test = new UserIncome ({ age : "25" });
+    test.setDefault();
+})
 
 app.post ('/calculation' , form.single() , (req , res , next ) => {
     let estimateSavingProcess = new UserIncome (req.body);
     // console.log(parseInt(0.9));
+    estimateSavingProcess.setDefault();
     let finalInflationRate = (1 - estimateSavingProcess.InflationReduction()).toFixed(2);
     console.log(finalInflationRate);
     let ReadableEstimationSaving =  estimateSavingProcess.ReadableEstimationSaving();
     res.render ('pages/index', {
         ReadableEstimationSaving : ReadableEstimationSaving,
-        finalInflationRate       : finalInflationRate
+        finalInflationRate       : finalInflationRate * 100
     });
 });
 
@@ -41,5 +47,5 @@ app.get('*', (req , res, next) => {
 })
 
 app.listen(app.get('port') , () => {
-    console.log ('Node app is running on port', app.get('port'));
+    console.log ('Server is running on port : ', app.get('port'));
 });
