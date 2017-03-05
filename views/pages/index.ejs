@@ -39,13 +39,24 @@
         </div>
         <div class="w3-border-bottom  w3-border-blue w3-container w3-hover-border-purple">
             <div class="w3-container w3-quarter">
+                <label> Offset money </label>
+            </div>
+            <div class="w3-container w3-half">
+                <input class="w3-input" type="number" name="offsetMoney" placeholder="0" />
+            </div>
+            <div class="w3-container w3-quarter">
+                <p><b class="w3-text-red" group="vnd"> (VNĐ)</b> Assume that you alreadt have the saving money,  </p>
+            </div>
+        </div>
+        <div class="w3-border-bottom  w3-border-blue w3-container w3-hover-border-purple">
+            <div class="w3-container w3-quarter">
                 <label> Your income per month : </label>
             </div>
             <div class="w3-container w3-half">
                 <input class="w3-input" type="number" name="monthSalary" placeholder="10000000" />
             </div>
             <div class="w3-container w3-quarter">
-                <b class="w3-text-red" id="vnd"> (VNĐ)</b>
+                <b class="w3-text-red" group="vnd"> (VNĐ)</b>
             </div>
         </div>
         <div class="w3-border-bottom  w3-border-blue w3-container w3-hover-border-purple">
@@ -67,7 +78,7 @@
                 <input class="w3-input" type="number" name="bonusSalary" placeholder="10000000"/>
             </div>
             <div class="w3-container w3-quarter">
-                <b class="w3-text-blue" id="vnd"> (VNĐ) </b>
+                <b class="w3-text-blue" group="vnd"> (VNĐ) </b>
             </div>
         </div>
 
@@ -79,7 +90,7 @@
                 <input class="w3-input" type="number" name="bonusReward" placeholder="10000000"/>
             </div>
             <div class="w3-container w3-quarter">
-                <b class="w3-text-blue" id="vnd"> (VNĐ) <br />assume that you have a personal business or others. </b>
+                <b class="w3-text-blue" group="vnd"> (VNĐ) <br />assume that you have a personal business or others. </b>
             </div>
         </div>
 
@@ -104,7 +115,7 @@
                 <input class="w3-input" type="number" name="fixCost" placeholder="4000000"/>
             </div>
             <div class="w3-container w3-quarter">
-                <b class="w3-text-blue" id="vnd"> (VNĐ)  </b>
+                <b class="w3-text-blue" group="vnd"> (VNĐ)  </b>
             </div>
         </div>
 
@@ -211,6 +222,15 @@
             <div class="w3-container w3-half w3-bottombar w3-text-blue">
                 <p class="w3-text-red"><%= finalInflationRate %> %</p>
             </div>
+            <div class="w3-container w3-half w3-bottombar">
+                <p class="w3-text-red">You lose after inflation reduction: </p>
+            </div>
+            <div class="w3-container w3-half w3-bottombar">
+                <p class="w3-text-red">
+                <%= losingMoneyReadable %>
+                </p>
+            </div>
+
     <% } else { %>
         <h1>Result here</h1>
     <%}%>

@@ -17,7 +17,7 @@ function ChangeCurrencyType () {
     var usedCurrency        = currencyDisplay.options[currencyDisplay.selectedIndex].text;
     var arrayOfVNDElement   = document.getElementsByTagName('b');
     for (var e in arrayOfVNDElement) {
-        if (arrayOfVNDElement[e].id == 'vnd') {
+        if (arrayOfVNDElement[e].group == 'vnd') {
             arrayOfVNDElement[e].innerHTML = usedCurrency;
         }
     }
