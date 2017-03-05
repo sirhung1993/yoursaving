@@ -23,8 +23,8 @@
     <div class="w3-container w3-green">
       <h2>Input your income :</h2>
     </div>
-    <form action="/calculation" id="saving" method="post" class="w3-container">
-        <fieldset>
+    <!-- <form action="/calculation" id="saving" method="post" class="w3-container">
+        <fieldset> -->
         <div class="w3-border-bottom w3-border-blue w3-container w3-hover-border-purple">
             <div class="w3-container w3-quarter">
                 <label> Your age : </label >
@@ -190,20 +190,20 @@
                 <label> Which type of currency :</label>
             </div>
             <div class="w3-container w3-half">
-                <select class="w3-container" name="typeOfCurrency" form="saving" id="currencyType" onclick="ChangeCurrencyType()">
-                    <option value="vnd"> (VNĐ) </option>
+                <select class="w3-container" name="typeOfCurrency" id="currencyType">
+                    <option value="vnd"> VNĐ </option>
                     <option value="usd"> $Trump </option>
                 </select>
             </div>
             <div class="w3-container w3-quarter">
-                <b class="w3-text-blue"> Default is <b class="w3-text-red">Dollar Trump</b></b>
+                <b class="w3-text-blue"> Default is <b class="w3-text-red">VNĐ</b></b>
             </div>
         </div>
 
-                <input type="submit" value="Submit" class="w3-round w3-btn-block w3-blue w3-ripple w3-hover-indigo" />
-
+                <button id='submitform' class="w3-round w3-btn-block w3-blue w3-ripple w3-hover-indigo">Submit here </button>
+<!--
             </fieldset>
-            </form>
+            </form> -->
         </div>
 <div class="w3-container">
     <ul>
@@ -232,15 +232,16 @@
             </div>
 
     <% } else { %>
-        <h1>Result here</h1>
     <%}%>
     </ul>
 </div>
 
-
+			<div class="w3-container">
+				<ul id='result'>
+				</ul>
+			</div>
     <footer>
         <% include ../partials/footer %>
     </footer>
-
 </body>
 </html>

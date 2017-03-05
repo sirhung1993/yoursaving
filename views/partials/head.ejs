@@ -10,17 +10,64 @@
 <style>
     html,body    { font-family: "Liberation Serif", cursive, sans-serif; }
 </style>
+<script src="layout/jquery.min.js">
+</script>
 <script>
 <!--
-function ChangeCurrencyType () {
-    var currencyDisplay     = document.getElementById('currencyType');
-    var usedCurrency        = currencyDisplay.options[currencyDisplay.selectedIndex].text;
-    var arrayOfVNDElement   = document.getElementsByTagName('b');
-    for (var e in arrayOfVNDElement) {
-        if (arrayOfVNDElement[e].group == 'vnd') {
-            arrayOfVNDElement[e].innerHTML = usedCurrency;
-        }
-    }
+// function ChangeCurrencyType () {
+//     var currencyDisplay     = document.getElementById('currencyType');
+//     var usedCurrency        = currencyDisplay.options[currencyDisplay.selectedIndex].text;
+//     var arrayOfVNDElement   = document.getElementsByTagName('b');
+//     for (var e in arrayOfVNDElement) {
+//         if (arrayOfVNDElement[e].group == 'vnd') {
+//             arrayOfVNDElement[e].innerHTML = usedCurrency;
+//         }
+//     }
+// }
+    $(document).ready(function(){
+      $('#currencyType').change(function(){
+        var usedCurrency = $('[name =\'typeOfCurrency\']').val()
+        usedCurrency = (usedCurrency === 'vnd') ? 'VNĐ' : '$Trump';
+        $('[group = "vnd"]').text(usedCurrency)
+      })
+    })
 //-->
-}
+</script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        $.post("calculation", {
+          //Post data up server
+          age: $("[name = 'age']").val(),
+          offsetMoney: $("[name = 'offsetMoney']").val(),
+          offsetMoney: $("[name = 'offsetMoney']").val(),
+          monthSalary: $("[name = 'monthSalary']").val(),
+          salaryIncrement: $("[name = 'salaryIncrement']").val(),
+          bonusReward: $("[name = 'bonusReward']").val(),
+          fixCost: $("[name = 'fixCost']").val(),
+          fixCostIncrement: $("[name = 'fixCostIncrement']").val(),
+          bankInterest: $("[name = 'bankInterest']").val(),
+          inflationRate: $("[name = 'inflationRate']").val(),
+          calculationDuration: $("[name = 'calculationDuration']").val(),
+          typeOfFormat: $("[name = 'typeOfFormat']").val(),
+          typeOfCurrency: $("[name = 'typeOfCurrency']").val(),
+        },function(data, status){
+          //load result
+          var ReadableEstimationSaving = data.ReadableEstimationSaving
+          var finalInflationRate = data.finalInflationRate
+          var losingMoneyReadable = data.losingMoneyReadable
+          $('#result').empty()
+          for (var e in ReadableEstimationSaving) {
+            $('#result').append(
+              '<div class="w3-container w3-half w3-bottombar">' +
+              ReadableEstimationSaving[e].name +
+              '</div>' +
+              '<div class="w3-container w3-half w3-bottombar w3-text-blue">' +
+              ReadableEstimationSaving[e].asset +
+              '</div>'
+            )
+            }
+        });
+    });
+});
 </script>

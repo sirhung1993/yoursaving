@@ -51,6 +51,7 @@ module.exports = class UserIncome {
     this.bankInterest = isNaN(this.bankInterest) ? 0.5 : this.bankInterest
     this.inflationRate = isNaN(this.inflationRate) ? 7 : this.inflationRate
     this.calculationDuration = isNaN(this.calculationDuration) ? 1 : this.calculationDuration
+    this.typeOfFormat = (this.typeOfFormat) ? this.typeOfFormat : undefined
         // for (var i in this) {
         //     console.log(this[i])
         //     }

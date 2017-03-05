@@ -11,7 +11,8 @@ const UserIncome = require('./abstract/user_income.js')
 // let ServerConfiguration = new Config('DEV')
 
 app.set('port', (process.env.PORT || 5000))
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
 app.use('/layout', express.static('./views/layout'))
 // let ReadableEstimationSaving = []
@@ -32,7 +33,7 @@ app.post('/calculation', form.single(), (req, res, next) => {
   let ReadableEstimationSaving = estimateSavingProcess.ReadableEstimationSaving(totalAsset)
   let losingMoney = totalAsset[totalAsset.length - 1] * finalInflationRate
   let losingMoneyReadable = estimateSavingProcess.ReadableEstimationSaving(losingMoney)
-  res.render('pages/index', {
+  res.status(200).json({
     ReadableEstimationSaving: ReadableEstimationSaving,
     finalInflationRate: (finalInflationRate * 100).toFixed(2),
     losingMoneyReadable: losingMoneyReadable
@@ -41,6 +42,22 @@ app.post('/calculation', form.single(), (req, res, next) => {
 
 app.get('/about', (req, res, next) => {
   res.render('pages/about')
+})
+
+app.post('/test', (req, res, next) => {
+  let estimateSavingProcess = new UserIncome(req.body)
+  estimateSavingProcess.setDefault()
+  let finalInflationRate = (1 - estimateSavingProcess.InflationReduction())
+  let totalAsset = estimateSavingProcess.EstimationSaving()
+  let ReadableEstimationSaving = estimateSavingProcess.ReadableEstimationSaving(totalAsset)
+  let losingMoney = totalAsset[totalAsset.length - 1] * finalInflationRate
+  let losingMoneyReadable = estimateSavingProcess.ReadableEstimationSaving(losingMoney)
+  console.log(req.body)
+  res.status(200).json({
+    ReadableEstimationSaving: ReadableEstimationSaving,
+    finalInflationRate: (finalInflationRate * 100).toFixed(2),
+    losingMoneyReadable: losingMoneyReadable
+  })
 })
 
 app.get('*', (req, res, next) => {
